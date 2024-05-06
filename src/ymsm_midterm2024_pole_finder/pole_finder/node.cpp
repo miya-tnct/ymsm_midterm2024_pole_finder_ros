@@ -118,8 +118,6 @@ void Node::convert(
   if(poles.size() < 2) {
     return;
   }
-
-  ROS_INFO("%s", error2s.c_str());
   
   // y座標をもとにpublish
   auto pole_itr = poles.begin();
