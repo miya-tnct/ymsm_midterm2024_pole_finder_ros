@@ -29,8 +29,11 @@ private:
 
   void convert(const sensor_msgs::LaserScan::ConstPtr& scan_msg);
 
-  double pole_diameter_;
+  ros::NodeHandle pnh_;
+
   double range_min_;
+  double cluster_threshold_, cluster_threshold2_;
+  double pole_diameter_;
 
   geometry_msgs::PointStamped pole_msg_;
 

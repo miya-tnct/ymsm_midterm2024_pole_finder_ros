@@ -9,13 +9,12 @@ namespace ymsm_midterm2024_planner::pole_finder
 
 Node::Node() :
   ros::NodeHandle(),
-  pole_diameter_(0.1),
-  range_min_(0.8),
-  pole_msg_([]{
-    geometry_msgs::PointStamped pole_msg;
-    pole_msg.header.frame_id = "map";
-    return pole_msg;
-  }()),
+  pnh_("~"),
+  range_min_(pnh_.param("range_min", 0.8)),
+  cluster_threshold_(pnh_.param("cluster_threshold", 0.3)),
+  cluster_threshold2_(cluster_threshold_ * cluster_threshold_),
+  pole_diameter_(pnh_.param("pole_diameter", 0.1)),
+  pole_msg_(),
   tf_buffer_(),
   tf_listener_(tf_buffer_),
   static_tf_broadcaster_(),
@@ -48,6 +47,7 @@ void Node::update_map(nav_msgs::OccupancyGrid::ConstPtr map_msg)
     map_msg_->info.resolution * map_msg_->info.height,
     std::numeric_limits<double>::infinity()
   );
+  pole_msg_.header.frame_id = map_msg->header.frame_id;
 }
 
 void Node::convert(
@@ -56,7 +56,7 @@ void Node::convert(
   geometry_msgs::TransformStamped scanner_tf_msg;
   try {
     scanner_tf_msg = tf_buffer_.lookupTransform(
-      "map", scan_msg->header.frame_id, ros::Time(0));
+      pole_msg_.header.frame_id, scan_msg->header.frame_id, ros::Time(0));
   }
   catch (...) {
     return;
@@ -87,7 +87,7 @@ void Node::convert(
   std::vector<tf2::Vector3> point_cluster;
   auto point_last = tf2::Vector3(0, 0, 0);
   for (const auto & point : points) {
-    if (point.distance2(point_last) > 0.3 * 0.3) {
+    if (point.distance2(point_last) > cluster_threshold2_) {
       point_clusters.push_back(point_cluster);
       point_cluster.clear();
     }
