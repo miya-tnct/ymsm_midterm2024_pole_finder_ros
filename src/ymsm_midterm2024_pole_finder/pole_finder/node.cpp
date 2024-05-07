@@ -139,11 +139,13 @@ void Node::convert(
   
   // publish
   auto publisher_itr = pole_publishers_.begin();
-  for (auto & pole : pole_set) {
+  for (auto & pole_from_map : pole_set) {
+    auto pole = map_origin_tf_ * pole_from_map;
     pole_msg_.point.x = pole.x();
     pole_msg_.point.y = pole.y();
     pole_msg_.point.z = pole.z();
     publisher_itr->publish(pole_msg_);
+    ++publisher_itr;
   }
   ++pole_msg_.header.seq;
 }
