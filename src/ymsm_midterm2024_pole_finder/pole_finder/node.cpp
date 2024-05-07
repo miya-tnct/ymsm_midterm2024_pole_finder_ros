@@ -21,7 +21,7 @@ Node::Node() :
   ros::NodeHandle(),
   pnh_("~"),
   range_min_(pnh_.param("range_min", 0.8)),
-  cluster_threshold2_(square(pnh_.param("cluster_threshold", 0.3))),
+  cluster_threshold_distance2_(square(pnh_.param("cluster_threshold", 0.3))),
   pole_diameter_(pnh_.param("pole_diameter", 0.1)),
   pole_diameter_error_threshold2_(square(pnh_.param("pole_diameter_error_threshold", 0.1))),
   pole_msg_(),
@@ -99,7 +99,7 @@ void Node::convert(
   std::deque<tf2::Vector3> point_cluster;
   auto scan_vec_last = tf2::Vector3(0, 0, 0);
   for (const auto & vec : scan_vecs) {
-    if (vec.distance2(scan_vec_last) > cluster_threshold2_) {
+    if (vec.distance2(scan_vec_last) > cluster_threshold_distance2_) {
       point_clusters.emplace_back(std::move(point_cluster));
       point_cluster = std::deque<tf2::Vector3>();
     }

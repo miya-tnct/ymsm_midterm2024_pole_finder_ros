@@ -35,7 +35,7 @@ private:
   ros::NodeHandle pnh_;
 
   double range_min_;
-  double cluster_threshold2_;
+  double cluster_threshold_distance2_;
   double pole_diameter_, pole_diameter_error_threshold2_;
 
   geometry_msgs::PointStamped pole_msg_;
