@@ -1,6 +1,13 @@
 #include "ymsm_midterm2024_pole_finder/pole_finder/node.h"
 
+#include <algorithm>
+#include <cmath>
+#include <iterator>
 #include <limits>
+#include <map>
+#include <set>
+#include <utility>
+#include <vector>
 
 #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 

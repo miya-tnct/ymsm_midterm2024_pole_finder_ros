@@ -1,3 +1,6 @@
+#include "ros/init.h"
+#include "ros/spinner.h"
+
 #include "ymsm_midterm2024_pole_finder/pole_finder/node.h"
 
 int main(int argc, char **argv)

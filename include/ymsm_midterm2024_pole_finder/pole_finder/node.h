@@ -4,7 +4,7 @@
 #include <array>
 
 #include "geometry_msgs/PointStamped.h"
-#include "ros/ros.h"
+#include "ros/node_handle.h"
 #include "nav_msgs/OccupancyGrid.h"
 #include "sensor_msgs/LaserScan.h"
 #include "tf2/LinearMath/Transform.h"
