@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <deque>
 #include <iterator>
 #include <limits>
 #include <map>
@@ -78,6 +79,7 @@ void Node::convert(
   // scanからpointに変換する
   // このときに近すぎる値とNaNとmap外の値は無視する
   std::vector<tf2::Vector3> scan_vecs;
+  scan_vecs.reserve(scan_msg->ranges.size());
   auto angle_min_harf = 0.5 * scan_msg->angle_min;
   auto laser_tf = tf2::Transform(scanner_tf.getRotation() * tf2::Quaternion(0, 0, std::sin(angle_min_harf), std::cos(angle_min_harf)), scanner_tf.getOrigin());
   auto angle_increment_harf = 0.5 * scan_msg->angle_increment;
@@ -93,19 +95,19 @@ void Node::convert(
   }
 
   // 距離が一定の範囲内の値をpoint_clusterとして、その集合point_clustersを作成する
-  std::vector<std::vector<tf2::Vector3>> point_clusters;
-  std::vector<tf2::Vector3> point_cluster;
+  std::deque<std::deque<tf2::Vector3>> point_clusters;
+  std::deque<tf2::Vector3> point_cluster;
   auto scan_vec_last = tf2::Vector3(0, 0, 0);
   for (const auto & vec : scan_vecs) {
     if (vec.distance2(scan_vec_last) > cluster_threshold2_) {
-      point_clusters.push_back(point_cluster);
-      point_cluster.clear();
+      point_clusters.emplace_back(std::move(point_cluster));
+      point_cluster = std::deque<tf2::Vector3>();
     }
 
-    point_cluster.push_back(vec);
+    point_cluster.emplace_back(vec);
     scan_vec_last = vec;
   }
-  point_clusters.push_back(point_cluster);
+  point_clusters.emplace_back(point_cluster);
 
   // point_clusterの端のpointの距離とポール直径二乗誤差をキーとしてpoleのpoint集合を作る
   // 要素数0のclusterは無視する
