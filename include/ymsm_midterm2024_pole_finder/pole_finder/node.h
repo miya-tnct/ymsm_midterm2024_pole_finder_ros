@@ -1,6 +1,8 @@
 #ifndef YMSM_MIDTERM2024_PLANNNER_POLE_FINDER_NODE_H_
 #define YMSM_MIDTERM2024_PLANNNER_POLE_FINDER_NODE_H_
 
+#include <array>
+
 #include "geometry_msgs/PointStamped.h"
 #include "ros/ros.h"
 #include "nav_msgs/OccupancyGrid.h"
@@ -22,7 +24,7 @@ public:
 private:
   static auto square(double val) { return val * val; }
 
-  bool is_in_map(const tf2::Vector3 & point);
+  bool is_in_map(const tf2::Vector3 & vec);
 
   void initialize_map(nav_msgs::OccupancyGrid::ConstPtr map_msg);
 
@@ -40,13 +42,13 @@ private:
 
   tf2_ros::Buffer tf_buffer_;
   tf2_ros::TransformListener tf_listener_;
-  ros::Publisher pole_left_publisher_, pole_right_publisher_;
+  std::array<ros::Publisher, 2> pole_publishers_;
   ros::Subscriber map_subscriber_;
 
   // ここからはmap受診時に初期化
   nav_msgs::OccupancyGrid::ConstPtr map_msg_;
-  tf2::Transform map_origin_, map_origin_inv_;
-  tf2::Vector3 map_point_max_;
+  tf2::Transform map_origin_tf_, map_origin_inv_tf_;
+  tf2::Vector3 map_max_vec_;
 
   ros::Subscriber scan_subscriber_;
 };
