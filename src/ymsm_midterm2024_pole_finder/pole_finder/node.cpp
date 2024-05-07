@@ -58,7 +58,7 @@ void Node::update_map(nav_msgs::OccupancyGrid::ConstPtr map_msg)
     map_msg_->info.resolution * map_msg_->info.height,
     std::numeric_limits<double>::infinity()
   );
-  pole_msg_.header.frame_id = map_msg->header.frame_id;
+  pole_msg_.header.frame_id = map_msg_->header.frame_id;
 }
 
 void Node::convert(
