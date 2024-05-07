@@ -95,7 +95,7 @@ void Node::convert(
   }
 
   // 距離が一定の範囲内の値をpoint_clusterとして、その集合point_clustersを作成する
-  std::deque<std::deque<tf2::Vector3>> point_clusters;
+  std::vector<std::deque<tf2::Vector3>> point_clusters;
   std::deque<tf2::Vector3> point_cluster;
   auto scan_vec_last = tf2::Vector3(0, 0, 0);
   for (const auto & vec : scan_vecs) {
