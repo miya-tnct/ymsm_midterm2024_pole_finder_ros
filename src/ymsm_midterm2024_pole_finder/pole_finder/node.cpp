@@ -11,9 +11,9 @@ Node::Node() :
   ros::NodeHandle(),
   pnh_("~"),
   range_min_(pnh_.param("range_min", 0.8)),
-  cluster_threshold_(pnh_.param("cluster_threshold", 0.3)),
-  cluster_threshold2_(cluster_threshold_ * cluster_threshold_),
+  cluster_threshold2_(square(pnh_.param("cluster_threshold", 0.3))),
   pole_diameter_(pnh_.param("pole_diameter", 0.1)),
+  pole_diameter_error_threshold2_(square(pnh_.param("pole_diameter_error_threshold", 0.1))),
   pole_msg_(),
   tf_buffer_(),
   tf_listener_(tf_buffer_),
@@ -108,7 +108,7 @@ void Node::convert(
     auto dist = point_cluster.front().distance(point_cluster.back());
     auto error = dist - pole_diameter_;
     auto error2 = error * error;
-    if (error2 <= 0.1 * 0.1) {
+    if (error2 <= pole_diameter_error_threshold2_) {
       poles.emplace(error * error, 0.5 * (point_cluster.front() + point_cluster.back()));
     }
   }

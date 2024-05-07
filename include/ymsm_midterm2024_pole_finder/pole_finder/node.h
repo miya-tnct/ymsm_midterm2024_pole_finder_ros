@@ -21,6 +21,8 @@ public:
   Node();
 
 private:
+  static auto square(double val) { return val * val; }
+
   bool is_in_map(const tf2::Vector3 & point);
 
   void initialize_map(nav_msgs::OccupancyGrid::ConstPtr map_msg);
@@ -32,8 +34,8 @@ private:
   ros::NodeHandle pnh_;
 
   double range_min_;
-  double cluster_threshold_, cluster_threshold2_;
-  double pole_diameter_;
+  double cluster_threshold2_;
+  double pole_diameter_, pole_diameter_error_threshold2_;
 
   geometry_msgs::PointStamped pole_msg_;
 
