@@ -100,7 +100,6 @@ void Node::convert(
   // point_clusterの端のpointの距離とポール直径二乗誤差をキーとしてpoleのpoint集合を作る
   // 要素数0のclusterは無視する
   std::multimap<double, tf2::Vector3> poles;
-  std::string error2s;
   for (const auto & point_cluster : point_clusters) {
     if (point_cluster.empty()) {
       continue;
@@ -111,7 +110,6 @@ void Node::convert(
     auto error2 = error * error;
     if (error2 <= 0.1 * 0.1) {
       poles.emplace(error * error, 0.5 * (point_cluster.front() + point_cluster.back()));
-      error2s += std::to_string(point_cluster.size()) + ",";
     }
   }
 
