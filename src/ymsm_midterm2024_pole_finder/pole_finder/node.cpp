@@ -17,7 +17,6 @@ Node::Node() :
   pole_msg_(),
   tf_buffer_(),
   tf_listener_(tf_buffer_),
-  static_tf_broadcaster_(),
   pole_left_publisher_(this->advertise<geometry_msgs::PointStamped>("pole_left", 1, true)),
   pole_right_publisher_(this->advertise<geometry_msgs::PointStamped>("pole_right", 1, true)),
   map_subscriber_(this->subscribe("map", 1, &Node::initialize_map, this))

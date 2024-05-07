@@ -8,7 +8,6 @@
 #include "tf2/LinearMath/Transform.h"
 #include "tf2/LinearMath/Vector3.h"
 #include "tf2_ros/buffer.h"
-#include "tf2_ros/static_transform_broadcaster.h"
 #include "tf2_ros/transform_listener.h"
 
 
@@ -41,7 +40,6 @@ private:
 
   tf2_ros::Buffer tf_buffer_;
   tf2_ros::TransformListener tf_listener_;
-  tf2_ros::StaticTransformBroadcaster static_tf_broadcaster_;
   ros::Publisher pole_left_publisher_, pole_right_publisher_;
   ros::Subscriber map_subscriber_;
 
